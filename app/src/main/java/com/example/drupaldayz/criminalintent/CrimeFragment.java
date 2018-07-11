@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 
 /**
  * Create by Dan Stachlewski on 29/6/18
@@ -65,7 +64,7 @@ public class CrimeFragment extends Fragment {
         mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setEnabled(false);
 
-        mTitleField = (EditText)v.findViewById(R.id.crime_title);
+        mTitleField = (EditText)v.findViewById(R.id.crime_solved);
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -2,17 +2,20 @@ package com.example.drupaldayz.criminalintent;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Create by Dan Stachlewski on 2/7/18
@@ -57,15 +60,10 @@ public class CrimeListFragment extends Fragment {
     //displaying crime on a new row
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Crime mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
-
-        public void bind(Crime crime){
-            mCrime = crime;
-            mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(mCrime.getDate().toString());
-        }
+        private ImageView mSolvedImageView;
+        private Crime mCrime;
 
         //This is the CrimeHolders Constructor Method
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -76,12 +74,31 @@ public class CrimeListFragment extends Fragment {
 
             mTitleTextView = (TextView)itemView.findViewById(R.id.crime_title);
             mDateTextView = (TextView)itemView.findViewById(R.id.crime_date);
+            mSolvedImageView = (ImageView)itemView.findViewById(R.id.crime_solved);
+
         }
+
+        public void bind(Crime crime){
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            //mDateTextView.setText(mCrime.getDate().toString());
+            mDateTextView.setText(getFormattedDate(mCrime.getDate()));
+            mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
+        }
+
 
         //This is the onClick/onTouch Method that displays a Toast msg with data from a row
         @Override
         public void onClick(View view) {
             Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+        }
+
+        private String getFormattedDate(Date date){
+            SimpleDateFormat formatter = new SimpleDateFormat("EEEE, d, MMMM, yyyy H:mm", Locale.ENGLISH);
+            //Time formatting:
+            // Ref: https://alvinalexander.com/java/jwarehouse/android/core/java/android/text/format/DateFormat.java.shtml
+            // Ref: https://github.com/ChloeLiang/Android-Programming-The-Big-Nerd-Ranch-Guide-3rd-Edition
+            return formatter.format(date);
         }
     }
 
